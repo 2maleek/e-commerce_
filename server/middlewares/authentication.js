@@ -10,6 +10,9 @@ module.exports = (req, res, next) => {
       if(!isFound){
         throw {status: 404, message: 'User not found'}
       }
+      if(isFound.roles !== 'customer') {
+        throw{status:403, message: 'Not authorized'}
+      }
       req.user = decoded
       next()
     })
