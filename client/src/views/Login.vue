@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -40,7 +42,25 @@ export default {
   },
   methods: {
     signIn() {
-      this.$store.dispatch('signIn', {email: this.email, password: this.password})
+      const payload = {
+        email: this.email,
+        password: this.password
+      }
+      axios({
+        method: 'post',
+        url: '/login',
+        data: payload,
+      })
+      .then(response => {
+        localStorage.setItem('access_token', response.data.access_token)
+        localStorage.setItem('username', response.data.name)
+        this.$store.commit('setUsername', localStorage.getItem('username'))
+        this.$router.push('/')
+        console.log(response.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     },
     signUp() {
       this.$router.push('/register')
