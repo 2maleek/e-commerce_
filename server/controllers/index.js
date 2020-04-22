@@ -96,12 +96,14 @@ class Controller {
   }
 
   static addToCart(req, res, next) {
-    const { ProductId, quantity } = req.body
+    let { ProductId, quantity } = req.body
+    if(!quantity) quantity = 1
     const { UserId } = req.user
     Cart.findAll({
       where: { UserId }
     })
     .then(data => {
+      console.log(data)
       data.forEach((item, i) => {
         if(item.ProductId === Number(ProductId)) {
           throw{ status: 400, message: "Already added to cart"}
@@ -114,7 +116,8 @@ class Controller {
       })
     })
     .then(response => {
-      res.status(201).json({message: 'Success added to cart'})
+      // res.status(201).json({message: 'Success added to cart'})
+      res.send(response)
     })
     .catch(err => {
       console.log(err)
@@ -124,10 +127,11 @@ class Controller {
 
   static findAllCart(req, res, next) {
     const { UserId } = req.user
-    Product.findAll({
+    Cart.findAll({
+      where: { UserId },
       include: [
         {
-          model: Cart,
+          model: Product,
         }
       ]
     })
