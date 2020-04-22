@@ -60,7 +60,7 @@ class Controller {
         name,
         roles,
       }, process.env.SECRET)
-      res.status(200).json({access_token})
+      res.status(200).json({access_token, name})
     })
     .catch(err => {
       next(err)
