@@ -81,7 +81,7 @@ export default {
   components: {
     Navbar,
     CartProduct,
-    Paypal,
+    PayPal,
   },
   data() {
     return {
