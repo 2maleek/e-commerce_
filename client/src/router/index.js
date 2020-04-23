@@ -52,7 +52,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if(localStorage.getItem('access_token')){
         store.commit('setUsername', localStorage.getItem('username'))
-        store.dispatch('findAllProduct')
+        store.dispatch('findAllCart')
         next()
       }
       else next({ name: 'Login' })

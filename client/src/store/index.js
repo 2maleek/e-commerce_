@@ -4,34 +4,29 @@ import axios from 'axios';
 import router from '../router';
 
 Vue.use(Vuex);
-axios.defaults.baseURL = 'https://blooming-reef-46142.herokuapp.com';
+// axios.defaults.baseURL = 'https://blooming-reef-46142.herokuapp.com';
+axios.defaults.baseURL = 'http://localhost:3000';
+
 
 export default new Vuex.Store({
   state: {
     username: '',
     products: [],
+    carts: [],
   },
   mutations: {
     setUsername(state, username) {
       state.username = username
+    },
+
+    updateQuantity(state, payload) {
+      let { id, index, quantity } = payload
+      state.carts[index].quantity = quantity
+      console.log(state.carts)
+      console.log('masuk')
     }
   },
   actions: {
-
-    signUp(context, payload) {
-      axios({
-        method: 'post',
-        url: '/register',
-        data: payload,
-      })
-      .then(response => {
-        context.dispatch('signIn', payload)
-      })
-      .catch(err => {
-        console.log(err.response)
-      })
-    },
-
     findAllProduct({commit, state}) {
       axios({
         method: 'get',
@@ -88,6 +83,52 @@ export default new Vuex.Store({
       })
       .catch(err => {
         console.log(err)
+      })
+    },
+
+    findAllCart({state}) {
+      axios({
+        method: 'get',
+        url: '/carts',
+        headers: {'access_token': localStorage.getItem('access_token')}
+      })
+      .then(response => {
+        state.carts = response.data
+        console.log(response.data)
+      })
+      .catch(err => {
+        console.log(err.response)
+      })
+    },
+
+    deleteCart(context, id) {
+      axios({
+        method: 'delete',
+        url: `/carts/${id}`,
+        headers: {'access_token': localStorage.getItem('access_token')}
+      })
+      .then(response => {
+        context.dispatch('findAllCart')
+        console.log(response.data)
+      })
+      .catch(err => {
+        console.log(err.response)
+      })
+    },
+
+    updateProductQuantity(context, payload) {
+      const { ProductId, quantity } = payload
+      axios({
+        method: 'put',
+        url: `/products/${ProductId}`,
+        data: { quantity },
+        headers: {'access_token': localStorage.getItem('access_token')}
+      })
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(err => {
+        console.log(err.response)
       })
     }
 

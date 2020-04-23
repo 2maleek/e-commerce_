@@ -1,10 +1,10 @@
 <template>
   <div class="row">
-    <div class="col-sm-6 col-md-3 col-lg-4" v-for="product in products" :key="product.id">
+    <div class="col-sm-6 col-md-3 col-lg-3" v-for="product in products" :key="product.id">
       <div class="cols-12">
         <b-card
           no-body
-          style="width: 18rem; height: 40rem;"
+          style="width: 10rem; height: 20rem; font-size:1em;"
           :img-src="product.image_url"
           img-alt="Image"
           img-top

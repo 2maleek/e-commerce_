@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -51,8 +53,35 @@ export default {
   },
   methods: {
     signUp() {
-      this.$store.dispatch('signUp', {name: this.name, email: this.email, password: this.password}) 
+      const payload =  {
+        name: this.name,
+        email: this.email,
+        password: this.password
+      }
+      axios({
+        method: 'post',
+        url: '/register',
+        data: payload,
+      })
+      .then(response => {
+        return axios({
+          method: 'post',
+          url: '/login',
+          data: payload,
+        })
+      })
+      .then(response => {
+        localStorage.setItem('access_token', response.data.access_token)
+        localStorage.setItem('username', response.data.name)
+        this.$store.commit('setUsername', localStorage.getItem('username'))
+        this.$router.push('/')
+        console.log(response.data)
+      })
+      .catch(err => {
+        console.log(err.response)
+      })
     },
+
     signIn() {
       this.$router.push('/login')
     },
