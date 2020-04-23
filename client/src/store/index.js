@@ -4,8 +4,8 @@ import axios from 'axios';
 import router from '../router';
 
 Vue.use(Vuex);
-// axios.defaults.baseURL = 'https://blooming-reef-46142.herokuapp.com';
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'https://blooming-reef-46142.herokuapp.com';
+// axios.defaults.baseURL = 'http://localhost:3000';
 
 
 export default new Vuex.Store({
@@ -13,6 +13,8 @@ export default new Vuex.Store({
     username: '',
     products: [],
     carts: [],
+    statusAlert: false,
+    message: '',
   },
   mutations: {
     setUsername(state, username) {
@@ -22,8 +24,6 @@ export default new Vuex.Store({
     updateQuantity(state, payload) {
       let { id, index, quantity } = payload
       state.carts[index].quantity = quantity
-      console.log(state.carts)
-      console.log('masuk')
     }
   },
   actions: {
@@ -44,8 +44,12 @@ export default new Vuex.Store({
           localStorage.removeItem('username')
           router.push('/login')
           //nanti send message
+          state.message = err.response.data.message
+          state.statusAlert = true
         }else {
           console.log(err.response)
+          state.message = err.response.data.message
+          state.statusAlert = true
         }
       })
     },
@@ -67,7 +71,8 @@ export default new Vuex.Store({
         Object.assign(state.products[index], response.data)
       })
       .catch(err => {
-        console.log(err.response)
+        state.message = err.response.data.message
+        state.statusAlert = true
       })
     },
 
@@ -82,7 +87,8 @@ export default new Vuex.Store({
         console.log(response.data)
       })
       .catch(err => {
-        console.log(err)
+        context.state.message = err.response.data.message
+        context.state.statusAlert = true
       })
     },
 
@@ -97,7 +103,8 @@ export default new Vuex.Store({
         console.log(response.data)
       })
       .catch(err => {
-        console.log(err.response)
+        state.message = err.response.data.message
+        state.statusAlert = true
       })
     },
 
@@ -113,6 +120,8 @@ export default new Vuex.Store({
       })
       .catch(err => {
         console.log(err.response)
+        context.state.message = err.response.data.message
+        context.state.statusAlert = true
       })
     },
 
@@ -129,6 +138,8 @@ export default new Vuex.Store({
       })
       .catch(err => {
         console.log(err.response)
+        context.state.message = err.response.data.message
+        context.state.statusAlert = true
       })
     }
 

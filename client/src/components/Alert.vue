@@ -1,30 +1,30 @@
 <template>
-  <b-alert
-    variant="danger"
-    dismissible
-    fade
-    :show="showDismissibleAlert"
-    @dismissed="showDismissibleAlert=false"
-  >
-    Dismissible Alert!
-  </b-alert>
+    <b-alert
+      variant="danger"
+      dismissible
+      fade
+      :show="showDismissibleAlert"
+      @dismissed="dismissed"
+    >
+      Dismissible Alert! {{ message }}
+    </b-alert>
 </template>
 
 <script>
 export default {
+  props: ['status', 'message'],
   data() {
     return {
       dismissSecs: 5,
-      dismissCountDown: 0,
-      showDismissibleAlert: false
+      showDismissibleAlert: status
     }
   },
   methods: {
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown
     },
-    showAlert() {
-      this.dismissCountDown = this.dismissSecs
+    dismissed() {
+      this.$emit('dismissed')
     }
   }
 }

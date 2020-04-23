@@ -2,6 +2,15 @@
   <div>
     <Navbar :username="this.$store.state.username"> </Navbar>
     <div class="container">
+      <b-alert
+        variant="danger"
+        dismissible
+        fade
+        :show="this.$store.state.statusAlert"
+        @dismissed="this.$store.state.statusAlert=false"
+      >
+        {{this.$store.state.message}}
+      </b-alert>
       <div class="row">
         <div class="col-sm-12 col-md-8">
           <table class="table table-hover">
@@ -26,6 +35,7 @@
                 :ProductId="cart.Product.id"
                 :quantity="cart.quantity"
                 :index="index"
+                :image_url="cart.Product.image_url"
               >
               </CartProduct>
             </tbody>
@@ -79,12 +89,15 @@ export default {
     toHome() {
       this.$router.push('/')
     },
-
+    dismissed() {
+      this.$store.state.statusAlert = false
+    },
     checkout() {
       let prom = []
       this.$store.state.carts.forEach((item, i) => {
         prom.push(this.$store.dispatch('updateProductQuantity', {ProductId: item.Product.id, quantity: item.quantity}))
-        // prom.push(this.$store.dispatch('deleteCart', item.id))
+        prom.push(this.$store.dispatch('deleteCart', item.id))
+        this.$router.push('/checkout')
       });
     }
   },

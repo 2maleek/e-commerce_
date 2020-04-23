@@ -1,6 +1,15 @@
 <template>
   <div class="home">
     <Navbar :username="this.$store.state.username"> </Navbar>
+    <b-alert
+      variant="danger"
+      dismissible
+      fade
+      :show="this.$store.state.statusAlert"
+      @dismissed="dismissed"
+    >
+      {{this.$store.state.message}}
+    </b-alert>
     <div class="container mt-5">
         <Product :products="this.$store.state.products"> </Product>
     </div>
@@ -16,6 +25,12 @@ export default {
   components: {
     Navbar,
     Product,
+
   },
+  methods: {
+    dismissed() {
+      this.$store.state.statusAlert = false
+    }
+  }
 };
 </script>

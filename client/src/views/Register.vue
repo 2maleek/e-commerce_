@@ -1,5 +1,14 @@
 <template>
   <b-container class="bv-example-row bv-example-row-flex-cols mt-5" style="height: 50vh;">
+    <b-alert
+      variant="danger"
+      dismissible
+      fade
+      :show="statusAlert"
+      @dismissed="statusAlert=false"
+    >
+      {{message}}
+    </b-alert>
     <b-row class="justify-content-center" align-v="center" style="margin-top: 30vh;">
       <b-col cols=6 >
         <b-form @submit.prevent="signUp">
@@ -49,6 +58,8 @@ export default {
       name: '',
       email: '',
       password: '',
+      message: '',
+      statusAlert: false,
     }
   },
   methods: {
@@ -75,10 +86,10 @@ export default {
         localStorage.setItem('username', response.data.name)
         this.$store.commit('setUsername', localStorage.getItem('username'))
         this.$router.push('/')
-        console.log(response.data)
       })
       .catch(err => {
-        console.log(err.response)
+        this.statusAlert=true
+        this.message = err.response.data.message
       })
     },
 

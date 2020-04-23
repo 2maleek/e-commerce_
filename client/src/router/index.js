@@ -5,6 +5,7 @@ import Home from '../views/Home.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Cart from '@/views/Cart.vue';
+import Checkout from '@/views/Checkout.vue';
 
 Vue.use(VueRouter);
 
@@ -49,6 +50,20 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: Cart,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('access_token')){
+        store.commit('setUsername', localStorage.getItem('username'))
+        store.dispatch('findAllCart')
+        next()
+      }
+      else next({ name: 'Login' })
+    }
+  },
+
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: Checkout,
     beforeEnter: (to, from, next) => {
       if(localStorage.getItem('access_token')){
         store.commit('setUsername', localStorage.getItem('username'))
