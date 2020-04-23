@@ -34,8 +34,6 @@ export default new Vuex.Store({
         headers: {'access_token': localStorage.getItem('access_token')}
       })
       .then(response => {
-        console.log('masuk find all')
-        console.log(response)
         state.products = response.data
       })
       .catch(err => {
@@ -47,7 +45,6 @@ export default new Vuex.Store({
           state.message = err.response.data.message
           state.statusAlert = true
         }else {
-          console.log(err.response)
           state.message = err.response.data.message
           state.statusAlert = true
         }
@@ -58,7 +55,6 @@ export default new Vuex.Store({
       const id = data.id
       const payload = data.payload
       const index = data.index
-      // console.log('id di store' + id)
       axios({
         method: 'put',
         url: `/products/${id}`,
@@ -66,8 +62,6 @@ export default new Vuex.Store({
         data: payload,
       })
       .then(response => {
-        console.log('keedit dari strore')
-        console.log(response.data)
         Object.assign(state.products[index], response.data)
       })
       .catch(err => {
@@ -100,7 +94,6 @@ export default new Vuex.Store({
       })
       .then(response => {
         state.carts = response.data
-        console.log(response.data)
       })
       .catch(err => {
         state.message = err.response.data.message
@@ -116,10 +109,8 @@ export default new Vuex.Store({
       })
       .then(response => {
         context.dispatch('findAllCart')
-        console.log(response.data)
       })
       .catch(err => {
-        console.log(err.response)
         context.state.message = err.response.data.message
         context.state.statusAlert = true
       })
@@ -137,7 +128,6 @@ export default new Vuex.Store({
         console.log(response.data)
       })
       .catch(err => {
-        console.log(err.response)
         context.state.message = err.response.data.message
         context.state.statusAlert = true
       })
