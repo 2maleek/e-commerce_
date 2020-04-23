@@ -57,6 +57,12 @@
                 <button type="button" class="btn btn-success" @click="checkout">
                   Checkout <span class="glyphicon glyphicon-play"></span>
                 </button>
+                <PayPal
+                 amount="10.00"
+                 currency="USD"
+                 :client="credentials"
+                 :experience="experienceOptions">
+                </PayPal>
               </td>
           </tr>
         </div>
@@ -68,12 +74,27 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import CartProduct from '@/components/CartProduct.vue';
+import PayPal from 'vue-paypal-checkout';
 
 export default {
   name: 'Cart',
   components: {
     Navbar,
     CartProduct,
+    Paypal,
+  },
+  data() {
+    return {
+      paypal: {
+        sandbox: '<sandbox client id>',
+        production: '<production client id>'
+      },
+      experienceOptions: {
+        input_fields: {
+          no_shipping: 1
+        }
+      },
+    }
   },
   computed: {
     totalPrice() {
