@@ -30,7 +30,7 @@ _Request Body_
 _Response (201 - Created)_
 ```
 {
-  "id": 6,
+  "id": <id>,
   "name": <your name>,
   "email": <your email>,
   "password": <your encrypted password>,
